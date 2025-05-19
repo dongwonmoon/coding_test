@@ -12,6 +12,6 @@ jobs:
      - name: Trigger repository dispatch
        uses: peter-evans/repository-dispatch@v1
        with:
-         token: ${{ secrets.GH_PAT }};
-         repository: {dongwonmoon}/Programmers_Badge_Generator;
-         event-type: trigger-workflow;
+         token: ${{ secrets.GH_PAT }}
+         repository: dongwonmoon/Programmers_Badge_Generator
+         event-type: trigger-workflow

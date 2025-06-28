@@ -1,11 +1,10 @@
 def solution(d, budget):
+    d.sort()
     answer = 0
-    while d:
-        min_ = min(d)
-        d.remove(min_)
-        budget -= min_
-        answer += 1
-        if budget < 0:
-            answer -= 1
+    for price in d:
+        if budget - price >= 0:
+            budget -= price
+            answer += 1
+        else:
             break
     return answer

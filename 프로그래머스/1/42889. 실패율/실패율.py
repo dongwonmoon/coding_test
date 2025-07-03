@@ -1,15 +1,18 @@
-import operator
-
 def solution(N, stages):
-    stage_dict = {}
-    stages.sort()
-    for stage in range(1, N+1):
-        challengers = len(list(filter(lambda x: x >= stage, stages)))
-        del stages[:len(stages) - challengers]
-        if challengers == 0:
-            stage_dict[stage] = 0
-        else: 
-            fail = stages.count(stage)
-            stage_dict[stage] = fail / challengers
-    
-    return [x[0] for x in sorted(stage_dict.items(), key=operator.itemgetter(1, 1), reverse=True)]
+    from collections import Counter
+
+    stage_counts = Counter(stages)
+    total = len(stages)
+    result = []
+
+    for stage in range(1, N + 1):
+        if total == 0:
+            result.append((stage, 0))
+        else:
+            fail = stage_counts.get(stage, 0)
+            fail_rate = fail / total
+            result.append((stage, fail_rate))
+            total -= fail
+
+    result.sort(key=lambda x: (-x[1], x[0]))
+    return [stage for stage, _ in result]

@@ -1,15 +1,34 @@
+from collections import defaultdict
+
 def solution(want, number, discount):
-    want_dict = {w: n for w, n in zip(want, number)}
+    want_dict = dict(zip(want, number))
+    current = defaultdict(int)
     count = 0
-    
-    for i in range(len(discount)):
-        l = discount[i: i+10]
+
+    # 초기 윈도우 설정
+    for item in discount[:10]:
+        current[item] += 1
+
+    def is_valid():
+        for item in want_dict:
+            if current[item] < want_dict[item]:
+                return False
+        return True
+
+    if is_valid():
+        count += 1
+
+    # 슬라이딩 윈도우
+    for i in range(10, len(discount)):
+        out_item = discount[i - 10]
+        in_item = discount[i]
         
-        tmp = []
-        for w in want:
-            if want_dict.get(w, None) != None and l.count(w) >= want_dict.get(w, None):
-                tmp.append(1)
-        if len(tmp) == len(want) and all(tmp):
+        current[out_item] -= 1
+        if current[out_item] == 0:
+            del current[out_item]
+        current[in_item] += 1
+
+        if is_valid():
             count += 1
-            
+
     return count
